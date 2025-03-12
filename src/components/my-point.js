@@ -8,10 +8,20 @@ export default class MyPoint extends HTMLElement {
         this.x = x;
         this.y = y;
         this.num = num;
+        this.selected = false;
+        this.addEventListener('click', (evt) => {
+          evt.stopPropagation()
+          evt.preventDefault();
+          this.selected = !this.selected;
+        });
       }
 
       connectedCallback() {
         this.render();
+      }
+
+      handlePointClick() {
+
       }
     
       render() {

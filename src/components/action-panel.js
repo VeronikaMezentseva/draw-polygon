@@ -9,11 +9,15 @@ export default class ActionPanel extends HTMLElement {
 
       panel.addEventListener('click', (event) => {
         if (event.target.classList.contains('create-point-button')) {
-          this.canvas.isActive = true;
+          this.canvas.isCanvasActive = true;
         } else if (event.target.classList.contains('clear-button')) {
           this.canvas.clearCanvas();
         } else if (event.target.classList.contains('draw-button')) {
           this.canvas.drawPolygon();
+        } else if (event.target.classList.contains('first-point-button')) {
+          // this.canvas.drawPolygon(); // TODO: сделать возможность выбрать точку, вызывать здесь ивент
+        } else if (event.target.classList.contains('second-point-button')) {
+          // this.canvas.drawPolygon();
         }
       });
     }
@@ -43,6 +47,11 @@ export default class ActionPanel extends HTMLElement {
         .button {
           padding: 5px 20px;
           width: 100%;
+          max-width: 200px;
+        }
+        .path-button-container {
+          display: flex;
+          gap: 30px;
         }
       </style>
       <div class="action-panel">
@@ -54,8 +63,14 @@ export default class ActionPanel extends HTMLElement {
         </div>
         <div>
           <p>Create path</p>
-          <button class="button first-point-button"}>First point</button>
-          <button class="button second-point-button"}>Second point</button>
+          <div class="path-button-container">
+            <button class="button first-point-button"}>First point:</button>
+            <p>0</p>
+          </div>
+          <div class="path-button-container">
+            <button class="button second-point-button"}>Second point:</button>
+            <p>0</p>
+          </div>
           <button class="button clear-button" ${isDisabledClearButton && 'disabled'}>Clear</button>
         </div>
       </div>

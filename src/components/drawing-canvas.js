@@ -4,7 +4,7 @@ import MyVektor from "./my-vektor";
 export default class DrawingCanvas extends HTMLElement {
   constructor() {
     super();
-    this.isActive = false;
+    this.isCanvasActive = false;
     this.isPolygonDrawn = false;
     this.pointArr = [];
     this.vektorArr = [];
@@ -23,7 +23,7 @@ export default class DrawingCanvas extends HTMLElement {
   }
 
   renderPoint(event) {
-    if (this.isActive) {
+    if (this.isCanvasActive) {
       const rect = this.canvas.getBoundingClientRect();
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
@@ -49,9 +49,11 @@ export default class DrawingCanvas extends HTMLElement {
     })
     this.vektorArr = [];
 
-    this.isActive = false;
+    this.isCanvasActive = false;
 
     this.events.dispatchEvent(new Event('pointsCleared')); // Генерируем событие
+
+    this.isPolygonDrawn = false;
   }
 
   findCenterPoint(points) {
@@ -103,6 +105,8 @@ export default class DrawingCanvas extends HTMLElement {
           y2: this.pointArr[0].y
         })
       }
+      this.isPolygonDrawn = true;
+      this.isCanvasActive = false;
     }
 
     this.pointArr.forEach((_, index) => {
@@ -110,8 +114,6 @@ export default class DrawingCanvas extends HTMLElement {
       this.vektorArr.push(vektor);
       this.canvas.appendChild(vektor);
     })
-
-    // this.events.dispatchEvent(new Event('polygonDrawn'));
   }
 
   render() {
