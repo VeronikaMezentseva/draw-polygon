@@ -27,7 +27,6 @@ export default class ActionPanel extends HTMLElement {
   
     render() {
       const pointsLength = this.canvas.pointArr.length;
-      const isPolygonDrawn = this.canvas.isPolygonDrawn;
       const isDisabledClearButton = pointsLength > 0 ? false : true;
       const isDisabledDrawButton = pointsLength >= 3 && pointsLength <=15 ? false : true;
       console.log('rerender');
@@ -47,10 +46,18 @@ export default class ActionPanel extends HTMLElement {
         }
       </style>
       <div class="action-panel">
-        <button class="button create-point-button">Create points</button>
-        <points-component numbers="${pointsLength}"></points-component>
-        <button class="button clear-button" ${isDisabledClearButton && 'disabled'}>Clear</button>
-        <button class="button draw-button" ${isDisabledDrawButton && 'disabled'}>Draw polygon</button>
+        <div>
+          <p>Create polygon</p>
+          <button class="button create-point-button">Create points</button>
+          <points-component numbers="${pointsLength}"></points-component>
+          <button class="button draw-button" ${isDisabledDrawButton && 'disabled'}>Draw polygon</button>
+        </div>
+        <div>
+          <p>Create path</p>
+          <button class="button first-point-button"}>First point</button>
+          <button class="button second-point-button"}>Second point</button>
+          <button class="button clear-button" ${isDisabledClearButton && 'disabled'}>Clear</button>
+        </div>
       </div>
     `;
     this.attachEventListeners();
