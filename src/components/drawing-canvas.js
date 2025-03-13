@@ -10,7 +10,7 @@ export default class DrawingCanvas extends HTMLElement {
     this.pointArr = [];
     this.vektorArr = [];
 
-    this.events = new EventTarget(); // Используем EventTarget для генерации событий
+    this.events = new EventTarget();
   }
   
   connectedCallback() {
@@ -23,6 +23,17 @@ export default class DrawingCanvas extends HTMLElement {
     });
   }
 
+  handlePointPressed(point) {
+    if (this.pointSelectionFlag) {
+      this.pointArr.map((point) => {
+        point.selected = false;
+        point.render();
+      });
+      point.selected = true;
+      point.render();
+    }
+  }
+
   renderPoint(event) {
     if (this.isCanvasActive) {
       const rect = this.canvas.getBoundingClientRect();
@@ -31,6 +42,10 @@ export default class DrawingCanvas extends HTMLElement {
       console.log(`Клик по координатам: (${x}, ${y})`);
       
       const point = new MyPoint(x, y, this.pointArr.length + 1, this);
+      // Подписываемся на событие pointPressed
+      point.onPointPressed(() => {
+        this.handlePointPressed(point);
+      });
       this.pointArr.push(point);
 
       this.events.dispatchEvent(new Event('pointAdded'));

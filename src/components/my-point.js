@@ -14,11 +14,18 @@ export default class MyPoint extends HTMLElement {
         this.addEventListener('click', (evt) => {
           evt.stopPropagation()
           evt.preventDefault();
-          if (this.canvas.pointSelectionFlag) {
-            this.selected = !this.selected; // менять селект статус только когда кнопка ферст поинт нажата
-            this.render();
-          }
+          // вызывать экшн pointPressed
+          this.events.dispatchEvent(new Event('pointPressed'));
+          // if (this.canvas.pointSelectionFlag) {
+          //   this.selected = !this.selected;
+          //   this.render();
+          // }
         });
+      }
+
+      // Метод для добавления слушателя события
+      onPointPressed(callback) {
+        this.events.addEventListener('pointPressed', callback);
       }
 
       connectedCallback() {
