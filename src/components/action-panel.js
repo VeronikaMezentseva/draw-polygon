@@ -3,6 +3,8 @@ export default class ActionPanel extends HTMLElement {
       super();
       this.canvas = canvas;
       this.events = new EventTarget();
+      this.clockwisePath = '';
+      this.counterclockwisePath = '';
     }
 
     attachEventListeners() {
@@ -13,6 +15,9 @@ export default class ActionPanel extends HTMLElement {
           this.canvas.isCanvasActive = true;
         } else if (event.target.classList.contains('clear-button')) {
           this.canvas.clearCanvas();
+          this.clockwisePath = '';
+          this.counterclockwisePath = '';
+          this.render();
         } else if (event.target.classList.contains('draw-button')) {
           this.canvas.drawPolygon();
         } else if (event.target.classList.contains('first-point-button')) {
@@ -22,6 +27,39 @@ export default class ActionPanel extends HTMLElement {
         }
       });
     }
+
+    handlePath() {
+      const firstSelectedPoint = this.canvas.pointArr.find((point) => point.selectedAsFirst);
+      const secondSelectedPoint = this.canvas.pointArr.find((point) => point.selectedAsSecond);
+      if (firstSelectedPoint && secondSelectedPoint) {
+        const pointNames = this.canvas.pointArr.map((point) => point.num);
+        const firstPoint = firstSelectedPoint.num;
+        const secondPoint = secondSelectedPoint.num;
+
+        const pathes = this.makePathes(pointNames, firstPoint, secondPoint);
+        this.clockwisePath = pathes.clockwiseArr;
+        this.counterclockwisePath = pathes.counterclockwiseArr;
+      }
+    }
+
+    makePathes(arr, start, end) {
+      const startIndex = arr.indexOf(start);
+      const endIndex = arr.indexOf(end);
+      let clockwiseArr = [];
+      let counterclockwiseArr = [];
+      for (let i = startIndex; i % arr.length !== endIndex; i++) {
+        clockwiseArr.push(arr[i%arr.length]);
+      }
+      clockwiseArr.push(arr[endIndex]);
+      for (let i = startIndex; i % arr.length !== endIndex; i--) {
+        counterclockwiseArr.push(arr[i%arr.length]);
+      }
+      counterclockwiseArr.push(arr[endIndex]);
+      return {
+        clockwiseArr,
+        counterclockwiseArr
+      };
+  }
     
     connectedCallback() {
       this.render();
@@ -38,6 +76,10 @@ export default class ActionPanel extends HTMLElement {
       });
 
       canvas.events.addEventListener('pointSelected', () => this.render());
+      canvas.events.addEventListener('twoPointsSelected', () => {
+        this.handlePath();
+        this.render();
+      });
     }
   
     render() {
@@ -85,7 +127,8 @@ export default class ActionPanel extends HTMLElement {
           </div>
           <button class="button clear-button" ${isDisabledClearButton && 'disabled'}>Clear</button>
         </div>
-        <p>Path: </p>
+        <p>Path clockwisePath: ${this.clockwisePath}</p>
+        <p>Path counterclockwisePath: ${this.counterclockwisePath}</p>
       </div>
     `;
     this.attachEventListeners();

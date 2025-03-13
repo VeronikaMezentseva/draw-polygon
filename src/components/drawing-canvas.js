@@ -41,7 +41,14 @@ export default class DrawingCanvas extends HTMLElement {
       point.selectedAsSecond = true;
       this.events.dispatchEvent(new Event('pointSelected'));
       point.render();
+      // const pointsNames = this.pointArr.map((point) => point.num);
     }
+    const isFirstPointSelected = this.pointArr.find((point) => point.selectedAsFirst === true);
+    const isSecondPointSelected = this.pointArr.find((point) => point.selectedAsSecond === true);
+    if (isFirstPointSelected && isSecondPointSelected) {
+      this.events.dispatchEvent(new Event('twoPointsSelected'));
+    }
+    
   }
 
   renderPoint(event) {
