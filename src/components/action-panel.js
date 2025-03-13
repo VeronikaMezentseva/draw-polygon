@@ -29,7 +29,6 @@ export default class ActionPanel extends HTMLElement {
       canvas.events.addEventListener('pointAdded', () => this.render());
       canvas.events.addEventListener('pointsCleared', () => this.render());
       this.events.addEventListener('firstPointButtonPressed', (evt) => {
-        console.log('firstPointButtonPressed');
         canvas.secondPointSelectionFlag = false;
         canvas.firstPointSelectionFlag = !canvas.firstPointSelectionFlag;
       });
@@ -37,13 +36,16 @@ export default class ActionPanel extends HTMLElement {
         canvas.firstPointSelectionFlag = false;
         canvas.secondPointSelectionFlag = !canvas.secondPointSelectionFlag;
       });
+
+      canvas.events.addEventListener('pointSelected', () => this.render());
     }
   
     render() {
       const pointsLength = this.canvas.pointArr.length;
       const isDisabledClearButton = pointsLength > 0 ? false : true;
       const isDisabledDrawButton = pointsLength >= 3 && pointsLength <=15 ? false : true;
-      console.log('rerender');
+      const firstSelectedPoint = this.canvas.pointArr.find((point) => point.selectedAsFirst);
+      const secondSelectedPoint = this.canvas.pointArr.find((point) => point.selectedAsSecond);
       this.innerHTML = `
       <style>
         .action-panel {
@@ -75,14 +77,15 @@ export default class ActionPanel extends HTMLElement {
           <p>Create path</p>
           <div class="path-button-container">
             <button class="button first-point-button"}>First point:</button>
-            <p>0</p>
+            <p>${firstSelectedPoint ? `p${firstSelectedPoint.num}` : ''}</p>
           </div>
           <div class="path-button-container">
             <button class="button second-point-button"}>Second point:</button>
-            <p>0</p>
+            <p>${secondSelectedPoint ? `p${secondSelectedPoint.num}` : ''}</p>
           </div>
           <button class="button clear-button" ${isDisabledClearButton && 'disabled'}>Clear</button>
         </div>
+        <p>Path: </p>
       </div>
     `;
     this.attachEventListeners();

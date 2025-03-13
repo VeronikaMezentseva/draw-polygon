@@ -6,7 +6,6 @@ export default class DrawingCanvas extends HTMLElement {
     super();
     this.isCanvasActive = false;
     this.isPolygonDrawn = false;
-    this.pointSelectionFlag = false;
     this.firstPointSelectionFlag = false;
     this.secondPointSelectionFlag = false;
     this.pointArr = [];
@@ -32,7 +31,7 @@ export default class DrawingCanvas extends HTMLElement {
         point.render();
       });
       point.selectedAsFirst = true;
-      console.log(point.selectedAsFirst);
+      this.events.dispatchEvent(new Event('pointSelected'));
       point.render();
     } else if (this.secondPointSelectionFlag) {
       this.pointArr.map((point) => {
@@ -40,9 +39,9 @@ export default class DrawingCanvas extends HTMLElement {
         point.render();
       });
       point.selectedAsSecond = true;
+      this.events.dispatchEvent(new Event('pointSelected'));
       point.render();
     }
-    point.render();
   }
 
   renderPoint(event) {
