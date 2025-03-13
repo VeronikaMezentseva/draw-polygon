@@ -28,9 +28,9 @@ export default class ActionPanel extends HTMLElement {
       const canvas = this.canvas;
       canvas.events.addEventListener('pointAdded', () => this.render());
       canvas.events.addEventListener('pointsCleared', () => this.render());
-      // this.events.addEventListener('firstPointButtonPressed', (evt) => {
-      //   console.log(evt.target);
-      // })
+      this.events.addEventListener('firstPointButtonPressed', (evt) => {
+        canvas.pointSelectionFlag = !canvas.pointSelectionFlag;
+      })
     }
   
     render() {

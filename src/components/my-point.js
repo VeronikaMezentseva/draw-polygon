@@ -1,6 +1,6 @@
 // Компонент Point
 export default class MyPoint extends HTMLElement {
-    constructor(x, y, num) {
+    constructor(x, y, num, canvas) {
         super();
         this.shadow = this.attachShadow(
             {mode: "open"}
@@ -9,13 +9,15 @@ export default class MyPoint extends HTMLElement {
         this.x = x;
         this.y = y;
         this.num = num;
+        this.canvas = canvas;
         this.selected = false;
         this.addEventListener('click', (evt) => {
           evt.stopPropagation()
           evt.preventDefault();
-          this.selected = !this.selected;
-          console.log(evt.target.selected);
-          this.render();
+          if (this.canvas.pointSelectionFlag) {
+            this.selected = !this.selected; // менять селект статус только когда кнопка ферст поинт нажата
+            this.render();
+          }
         });
       }
 

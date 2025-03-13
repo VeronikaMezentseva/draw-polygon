@@ -6,6 +6,7 @@ export default class DrawingCanvas extends HTMLElement {
     super();
     this.isCanvasActive = false;
     this.isPolygonDrawn = false;
+    this.pointSelectionFlag = false;
     this.pointArr = [];
     this.vektorArr = [];
 
@@ -29,7 +30,7 @@ export default class DrawingCanvas extends HTMLElement {
       const y = event.clientY - rect.top;
       console.log(`Клик по координатам: (${x}, ${y})`);
       
-      const point = new MyPoint(x, y, this.pointArr.length + 1);
+      const point = new MyPoint(x, y, this.pointArr.length + 1, this);
       this.pointArr.push(point);
 
       this.events.dispatchEvent(new Event('pointAdded'));
