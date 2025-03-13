@@ -5,6 +5,7 @@ export default class MyPoint extends HTMLElement {
         this.shadow = this.attachShadow(
             {mode: "open"}
         );
+        this.events = new EventTarget();
         this.x = x;
         this.y = y;
         this.num = num;
@@ -13,11 +14,16 @@ export default class MyPoint extends HTMLElement {
           evt.stopPropagation()
           evt.preventDefault();
           this.selected = !this.selected;
+          console.log(evt.target.selected);
+          this.render();
         });
       }
 
       connectedCallback() {
         this.render();
+        this.events.addEventListener('firstPointButtonPressed', (evt) => {
+          console.log(evt.target);
+        })
       }
 
       handlePointClick() {
@@ -49,8 +55,12 @@ export default class MyPoint extends HTMLElement {
             cursor: pointer;
             color: blue;
           }
+          .point_selected {
+            border: 1px solid blue;
+            color: blue;
+          }
         </style>
-        <div class="point">
+        <div class="point ${this.selected && 'point_selected'}">
             
         </div>
       `;

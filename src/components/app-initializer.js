@@ -18,9 +18,9 @@ export default class AppInitializer extends HTMLElement {
  
       // Здесь мы используем setTimeout, чтобы дать DOM время на обновление
       setTimeout(() => {
-        const canvas = drawingCanvas;
-        console.log(canvas);
-        this.shadowRoot.appendChild(new ActionPanel(canvas));
+        // const canvas = drawingCanvas;
+        const actionPanel = new ActionPanel(drawingCanvas)
+        this.shadowRoot.appendChild(actionPanel);
       }, 0);
     }
   

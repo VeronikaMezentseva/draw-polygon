@@ -2,6 +2,7 @@ export default class ActionPanel extends HTMLElement {
   constructor(canvas) {
       super();
       this.canvas = canvas;
+      this.events = new EventTarget();
     }
 
     attachEventListeners() {
@@ -15,7 +16,7 @@ export default class ActionPanel extends HTMLElement {
         } else if (event.target.classList.contains('draw-button')) {
           this.canvas.drawPolygon();
         } else if (event.target.classList.contains('first-point-button')) {
-          // this.canvas.drawPolygon(); // TODO: сделать возможность выбрать точку, вызывать здесь ивент
+          this.events.dispatchEvent(new Event('firstPointButtonPressed'));
         } else if (event.target.classList.contains('second-point-button')) {
           // this.canvas.drawPolygon();
         }
@@ -25,8 +26,11 @@ export default class ActionPanel extends HTMLElement {
     connectedCallback() {
       this.render();
       const canvas = this.canvas;
-      canvas.events.addEventListener('pointAdded', () => this.render()); // сильно замедляет приложение
+      canvas.events.addEventListener('pointAdded', () => this.render());
       canvas.events.addEventListener('pointsCleared', () => this.render());
+      // this.events.addEventListener('firstPointButtonPressed', (evt) => {
+      //   console.log(evt.target);
+      // })
     }
   
     render() {
