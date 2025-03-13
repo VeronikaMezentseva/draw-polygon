@@ -43,6 +43,12 @@ export default class ActionPanel extends HTMLElement {
     }
 
     makePathes(arr, start, end) {
+      // arr = [5,2,7,6,8,1,3]
+      // arr = [3,1,8,6,7,2,5]
+      // start = 2
+      // end = 1
+      // [2,5,3,1]
+
       const startIndex = arr.indexOf(start);
       const endIndex = arr.indexOf(end);
       let clockwiseArr = [];
@@ -51,9 +57,13 @@ export default class ActionPanel extends HTMLElement {
         clockwiseArr.push(arr[i%arr.length]);
       }
       clockwiseArr.push(arr[endIndex]);
-      for (let i = startIndex; i % arr.length !== (endIndex - 1 + arr.length) % arr.length; i--) {
-        counterclockwiseArr.push(arr[i%arr.length]);
+      const reverseArr = arr.reverse();
+      const startIndexReverse = reverseArr.indexOf(start);
+      const endIndexReverse = reverseArr.indexOf(end);
+      for (let i = startIndexReverse; i % reverseArr.length !== endIndexReverse; i++) {
+        counterclockwiseArr.push(reverseArr[i%reverseArr.length]);
       }
+      counterclockwiseArr.push(reverseArr[endIndexReverse]);
       return {
         clockwiseArr,
         counterclockwiseArr
