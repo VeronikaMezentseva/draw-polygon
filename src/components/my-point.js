@@ -44,9 +44,9 @@ export default class MyPoint extends HTMLElement {
             z-index: 1;
           }
           .point::before {
-            content: '${this.num}';
+            content: 'p${this.num}';
             position: absolute;
-            bottom: 10px;
+            bottom: 15px;
           }
           .point:hover {
             border: 1px solid blue;
