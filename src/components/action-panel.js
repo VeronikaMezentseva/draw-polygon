@@ -51,10 +51,9 @@ export default class ActionPanel extends HTMLElement {
         clockwiseArr.push(arr[i%arr.length]);
       }
       clockwiseArr.push(arr[endIndex]);
-      for (let i = startIndex; i % arr.length !== endIndex; i--) {
+      for (let i = startIndex; i % arr.length !== (endIndex - 1 + arr.length) % arr.length; i--) {
         counterclockwiseArr.push(arr[i%arr.length]);
       }
-      counterclockwiseArr.push(arr[endIndex]);
       return {
         clockwiseArr,
         counterclockwiseArr
