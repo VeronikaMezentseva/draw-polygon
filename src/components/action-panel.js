@@ -18,7 +18,7 @@ export default class ActionPanel extends HTMLElement {
         } else if (event.target.classList.contains('first-point-button')) {
           this.events.dispatchEvent(new Event('firstPointButtonPressed'));
         } else if (event.target.classList.contains('second-point-button')) {
-          // this.canvas.drawPolygon();
+          this.events.dispatchEvent(new Event('secondPointButtonPressed'));
         }
       });
     }
@@ -29,8 +29,14 @@ export default class ActionPanel extends HTMLElement {
       canvas.events.addEventListener('pointAdded', () => this.render());
       canvas.events.addEventListener('pointsCleared', () => this.render());
       this.events.addEventListener('firstPointButtonPressed', (evt) => {
-        canvas.pointSelectionFlag = !canvas.pointSelectionFlag;
-      })
+        console.log('firstPointButtonPressed');
+        canvas.secondPointSelectionFlag = false;
+        canvas.firstPointSelectionFlag = !canvas.firstPointSelectionFlag;
+      });
+      this.events.addEventListener('secondPointButtonPressed', (evt) => {
+        canvas.firstPointSelectionFlag = false;
+        canvas.secondPointSelectionFlag = !canvas.secondPointSelectionFlag;
+      });
     }
   
     render() {

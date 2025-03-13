@@ -10,16 +10,12 @@ export default class MyPoint extends HTMLElement {
         this.y = y;
         this.num = num;
         this.canvas = canvas;
-        this.selected = false;
+        this.selectedAsFirst = false;
+        this.selectedAsSecond = false;
         this.addEventListener('click', (evt) => {
           evt.stopPropagation()
           evt.preventDefault();
-          // вызывать экшн pointPressed
           this.events.dispatchEvent(new Event('pointPressed'));
-          // if (this.canvas.pointSelectionFlag) {
-          //   this.selected = !this.selected;
-          //   this.render();
-          // }
         });
       }
 
@@ -30,13 +26,6 @@ export default class MyPoint extends HTMLElement {
 
       connectedCallback() {
         this.render();
-        this.events.addEventListener('firstPointButtonPressed', (evt) => {
-          console.log(evt.target);
-        })
-      }
-
-      handlePointClick() {
-
       }
     
       render() {
@@ -69,12 +58,11 @@ export default class MyPoint extends HTMLElement {
             color: blue;
           }
         </style>
-        <div class="point ${this.selected && 'point_selected'}">
+        <div class="point ${(this.selectedAsFirst || this.selectedAsSecond) && 'point_selected'}">
             
         </div>
       `;
       }
 }
 
-// Регистрируем веб-компонент Point
 customElements.define('my-point', MyPoint);

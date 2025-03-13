@@ -7,6 +7,8 @@ export default class DrawingCanvas extends HTMLElement {
     this.isCanvasActive = false;
     this.isPolygonDrawn = false;
     this.pointSelectionFlag = false;
+    this.firstPointSelectionFlag = false;
+    this.secondPointSelectionFlag = false;
     this.pointArr = [];
     this.vektorArr = [];
 
@@ -24,14 +26,23 @@ export default class DrawingCanvas extends HTMLElement {
   }
 
   handlePointPressed(point) {
-    if (this.pointSelectionFlag) {
+    if (this.firstPointSelectionFlag) {
       this.pointArr.map((point) => {
-        point.selected = false;
+        point.selectedAsFirst = false;
         point.render();
       });
-      point.selected = true;
+      point.selectedAsFirst = true;
+      console.log(point.selectedAsFirst);
+      point.render();
+    } else if (this.secondPointSelectionFlag) {
+      this.pointArr.map((point) => {
+        point.selectedAsSecond = false;
+        point.render();
+      });
+      point.selectedAsSecond = true;
       point.render();
     }
+    point.render();
   }
 
   renderPoint(event) {
@@ -42,7 +53,7 @@ export default class DrawingCanvas extends HTMLElement {
       console.log(`Клик по координатам: (${x}, ${y})`);
       
       const point = new MyPoint(x, y, this.pointArr.length + 1, this);
-      // Подписываемся на событие pointPressed
+      // подписываемся на событие pointPressed
       point.onPointPressed(() => {
         this.handlePointPressed(point);
       });
