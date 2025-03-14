@@ -13,16 +13,6 @@ export default class DrawingCanvas extends HTMLElement {
     this.vektorArr = [];
     this.events = new EventTarget();
   }
-
-  handleActivateVektors(arr, start, end) {
-    const startIndex = arr.indexOf(start);
-    const endIndex = arr.indexOf(end);
-
-    for (let i = startIndex; i < this.pointArr.length; i++) {
-      arr[i].active = true;
-      arr[i].render();
-    }
-  }
   
   connectedCallback() {
     this.render();
@@ -34,9 +24,6 @@ export default class DrawingCanvas extends HTMLElement {
     });
 
     this.events.addEventListener('pathesCreated', (evt) => {
-      console.log('pathesCreated');
-      // TODO: очищать статусы векторов перед рисованием
-      // TODO: перед каждым выбором точки проверять выбрано ли уже две точки, если да - очищать векторы
       this.vektorArr.forEach((vektor) => vektor.active = false);
       const pointNames = this.pointArr.map((point) => point.num);
       const pathes = evt.detail;
@@ -54,7 +41,6 @@ export default class DrawingCanvas extends HTMLElement {
     });
 
     this.events.addEventListener('changeOrder', () => {
-      console.log('change clicked');
       this.vektorArr.forEach((vektor) => {
         if (vektor.active) {
           vektor.active = false;
@@ -88,12 +74,8 @@ export default class DrawingCanvas extends HTMLElement {
     const isFirstPointSelected = this.pointArr.find((point) => point.selectedAsFirst === true);
     const isSecondPointSelected = this.pointArr.find((point) => point.selectedAsSecond === true);
     if (isFirstPointSelected && isSecondPointSelected) {
-      // //тогда здесь
-      // this.canvas.vektorArr.forEach((vektor) => vektor.active = false);
       this.events.dispatchEvent(new Event('twoPointsSelected'));
-
     }
-    
   }
 
   renderPoint(event) {

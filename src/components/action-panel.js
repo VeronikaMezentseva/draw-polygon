@@ -28,6 +28,12 @@ export default class ActionPanel extends HTMLElement {
           this.events.dispatchEvent(new Event('secondPointButtonPressed'));
         } else if (event.target.classList.contains('order-button')) {
           this.canvas.events.dispatchEvent(new Event('changeOrder'));
+          if (this.orderButtonText === 'Clockwise order') {
+            this.orderButtonText = 'Counterclockwise order'
+          } else {
+            this.orderButtonText = 'Clockwise order'
+          }
+          this.render();
         }
       });
     }
