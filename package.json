@@ -1,6 +1,6 @@
 {
   "name": "webcomp-boilerplate-helloworld",
-  "private": true,
+  "private": false,
   "scripts": {
     "build": "webpack --config webpack.prod.js",
     "start": "webpack serve --config webpack.dev.js"
