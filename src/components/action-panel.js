@@ -24,6 +24,10 @@ export default class ActionPanel extends HTMLElement {
           this.events.dispatchEvent(new Event('firstPointButtonPressed'));
         } else if (event.target.classList.contains('second-point-button')) {
           this.events.dispatchEvent(new Event('secondPointButtonPressed'));
+        } else if (event.target.classList.contains('order-button')) {
+          // TODO
+          console.log('listener added');
+          this.canvas.events.dispatchEvent(new Event('changeOrder'));
         }
       });
     }
@@ -139,6 +143,7 @@ export default class ActionPanel extends HTMLElement {
             <button class="button second-point-button"}>Second point:</button>
             <p>${secondSelectedPoint ? `p${secondSelectedPoint.num}` : ''}</p>
           </div>
+          <button class="button order-button"}>Change order</button>
           <button class="button clear-button" ${isDisabledClearButton && 'disabled'}>Clear</button>
         </div>
         <p>Path clockwisePath: ${this.clockwisePath}</p>

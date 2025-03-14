@@ -44,6 +44,18 @@ export default class DrawingCanvas extends HTMLElement {
         vektor.active = true;
         vektor.render();
       })
+    });
+    this.events.addEventListener('changeOrder', () => {
+      console.log('change clicked');
+      this.vektorArr.forEach((vektor) => {
+        if (vektor.active) {
+          vektor.active = false;
+          vektor.render();
+        } else {
+          vektor.active = true;
+          vektor.render();
+        }
+      })
     })
   }
 
