@@ -19,6 +19,8 @@ export default class ActionPanel extends HTMLElement {
           this.canvas.clearCanvas();
           this.clockwisePath = '';
           this.counterclockwisePath = '';
+          this.currentPath = '';
+          this.orderButtonText = 'Clockwise order';
           this.render();
         } else if (event.target.classList.contains('draw-button')) {
           this.canvas.drawPolygon();

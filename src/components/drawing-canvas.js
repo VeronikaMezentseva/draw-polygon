@@ -114,7 +114,7 @@ export default class DrawingCanvas extends HTMLElement {
   }
 
   findCenterPoint(points) {
-    var x = 0, y = 0, i, len = points.length;
+    let x = 0, y = 0, i, len = points.length;
 
     for (i = 0; i < len; i++) {
       x += points[i].x;
@@ -124,7 +124,7 @@ export default class DrawingCanvas extends HTMLElement {
   }
 
   findAngles(centerPoint, points) {
-    var i, len = points.length, p, dx, dy;
+    let i, len = points.length, p, dx, dy;
 
     for (i = 0; i < len; i++) {
       p = points[i];
