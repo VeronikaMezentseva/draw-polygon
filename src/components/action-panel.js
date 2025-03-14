@@ -6,6 +6,7 @@ export default class ActionPanel extends HTMLElement {
       this.clockwisePath = '';
       this.counterclockwisePath = '';
       this.orderButtonText = 'Clockwise order';
+      this.currentPath = this.clockwisePath;
     }
 
     attachEventListeners() {
@@ -29,9 +30,11 @@ export default class ActionPanel extends HTMLElement {
         } else if (event.target.classList.contains('order-button')) {
           this.canvas.events.dispatchEvent(new Event('changeOrder'));
           if (this.orderButtonText === 'Clockwise order') {
-            this.orderButtonText = 'Counterclockwise order'
+            this.orderButtonText = 'Counterclockwise order';
+            this.currentPath = this.counterclockwisePath.map((point) => 'p' + point).join('-');
           } else {
-            this.orderButtonText = 'Clockwise order'
+            this.orderButtonText = 'Clockwise order';
+            this.currentPath = this.clockwisePath.map((point) => 'p' + point).join('-');
           }
           this.render();
         }
@@ -102,6 +105,11 @@ export default class ActionPanel extends HTMLElement {
           vektor.render();
         });
         this.handlePath();
+        if (this.orderButtonText === 'Clockwise order') {
+          this.currentPath = this.clockwisePath.map((point) => 'p' + point).join('-');
+        } else {
+          this.currentPath = this.counterclockwisePath.map((point) => 'p' + point).join('-');
+        }
         this.render();
       });
     }
@@ -121,6 +129,8 @@ export default class ActionPanel extends HTMLElement {
       this.canvas.pointArr.forEach((point) => {
         pointMap[point.num] = point;
       });
+      const path = this.currentPath;
+
       this.innerHTML = `
       <style>
         .action-panel {
@@ -161,8 +171,7 @@ export default class ActionPanel extends HTMLElement {
           <button class="button order-button" ${isChangeOrderButtonDisabled && 'disabled'}>${this.orderButtonText}</button>
           <button class="button clear-button" ${isDisabledClearButton && 'disabled'}>Clear</button>
         </div>
-        <p>Path clockwisePath: ${this.clockwisePath}</p>
-        <p>Path counterclockwisePath: ${this.counterclockwisePath}</p>
+        <p>Path: ${path}</p>
       </div>
     `;
     this.attachEventListeners();
