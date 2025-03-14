@@ -178,11 +178,20 @@ export default class DrawingCanvas extends HTMLElement {
   render() {
     return this.innerHTML = `
       <style>
+        drawing-canvas {
+          display: flex;
+          flex-direction: row;
+          align-items: stretch;
+          width: 100%;
+          color: black;
+          border: 1px solid black;
+        }
         .drawing-canvas {
           position: relative;
-          width: 200px;
-          height: 200px;
-          background-color: rgb(151, 149, 171);
+          width: 100%;
+          height: 100%;
+          background-color: white;
+          flex: 1;
         }
       </style>
       <div class="drawing-canvas">

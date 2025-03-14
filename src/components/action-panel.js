@@ -137,41 +137,65 @@ export default class ActionPanel extends HTMLElement {
           display: flex;
           flex-direction: column;
           gap: 30px;
+          width: 350px;
         }
         .action-panel_active {
           border: 1px solid green;
         }
+        .main-paragraph {
+          font-size: 22px;
+          font-weight: bold;
+        }
+        .path {
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+        }
         .button {
-          padding: 5px 20px;
+          font-size: 16px;
+          padding: 10px 20px;
           width: 100%;
-          max-width: 200px;
+          border: none;
+          border-radius: 8px;
+        }
+        p {
+          margin: 5px 0px;
+        }
+        .first-point-button {
+          max-width: 260px;
+        }
+        .second-point-button {
+          max-width: 260px;
         }
         .path-button-container {
           display: flex;
           gap: 30px;
+          align-items: flex-start;
         }
       </style>
       <div class="action-panel">
         <div>
-          <p>Create polygon</p>
+          <p class="main-paragraph">Create polygon</p>
           <button class="button create-point-button" ${isCreatePointsButtonDisabled && 'disabled'}>Create points</button>
           <points-component numbers="${pointsLength}"></points-component>
           <button class="button draw-button" ${isDisabledDrawButton && 'disabled'}>Draw polygon</button>
         </div>
         <div>
-          <p>Create path</p>
-          <div class="path-button-container">
-            <button class="button first-point-button" ${isDisabledPointSelectingButtons && 'disabled'}>First point:</button>
-            <p>${firstSelectedPoint ? `p${firstSelectedPoint.num}` : ''}</p>
+          <p class="main-paragraph">Create path</p>
+          <div class="path">        
+            <div class="path-button-container">
+              <button class="button first-point-button" ${isDisabledPointSelectingButtons && 'disabled'}>First point:</button>
+              <p>${firstSelectedPoint ? `p${firstSelectedPoint.num}` : ''}</p>
+            </div>
+            <div class="path-button-container">
+              <button class="button second-point-button" ${isDisabledPointSelectingButtons && 'disabled'}>Second point:</button>
+              <p>${secondSelectedPoint ? `p${secondSelectedPoint.num}` : ''}</p>
+            </div>
+            <button class="button order-button" ${isChangeOrderButtonDisabled && 'disabled'}>${this.orderButtonText}</button>
+            <button class="button clear-button" ${isDisabledClearButton && 'disabled'}>Clear</button>
           </div>
-          <div class="path-button-container">
-            <button class="button second-point-button" ${isDisabledPointSelectingButtons && 'disabled'}>Second point:</button>
-            <p>${secondSelectedPoint ? `p${secondSelectedPoint.num}` : ''}</p>
-          </div>
-          <button class="button order-button" ${isChangeOrderButtonDisabled && 'disabled'}>${this.orderButtonText}</button>
-          <button class="button clear-button" ${isDisabledClearButton && 'disabled'}>Clear</button>
         </div>
-        <p>Path: ${path}</p>
+        <p class="main-paragraph">Path: ${path}</p>
       </div>
     `;
     this.attachEventListeners();

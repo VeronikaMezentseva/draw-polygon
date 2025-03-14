@@ -9,7 +9,7 @@ export default class PointsComponent extends HTMLElement {
       const style = document.createElement('style');
       style.textContent = `
         p {
-          color: ${numbers >= 3 && numbers <=15 ? 'green' : 'red'};
+          color: ${numbers >= 3 && numbers <=15 ? '#1bcc35' : '#DC2E45'};
         }
       `;
 

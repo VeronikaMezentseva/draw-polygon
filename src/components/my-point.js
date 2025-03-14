@@ -35,27 +35,30 @@ export default class MyPoint extends HTMLElement {
             position: absolute;
             display: block;
             background-color: white;
-            border: 1px solid black;
+            border: 2px solid black;
+            font-size: 18px;
+            font-weight: bold;
+            color: #306573;
             border-radius: 50%;
             width: 10px;
             height: 10px;
             left: ${this.x - 5}px; /* Сдвиг для центрирования */
             top: ${this.y - 5}px;  /* Сдвиг для центрирования */
-            z-index: 1;
+            z-index: 2;
           }
           .point::before {
             content: 'p${this.num}';
             position: absolute;
             bottom: 15px;
+            z-index: 2;
           }
           .point:hover {
-            border: 1px solid blue;
+            border: 2px solid rgb(38, 143, 235);
             cursor: pointer;
-            color: blue;
+            color: rgb(38, 143, 235);
           }
           .point_selected {
-            border: 1px solid blue;
-            color: blue;
+            background-color: #0197F6;
           }
         </style>
         <div class="point ${(this.selectedAsFirst || this.selectedAsSecond) && 'point_selected'}">

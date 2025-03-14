@@ -15,7 +15,7 @@ export default class TestComponent extends HTMLElement {
     this.shadow.innerHTML = `
     <style>
       h2 {
-          color: red;
+          color: #E36374;
       }
       div {
         display: block;

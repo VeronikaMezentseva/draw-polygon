@@ -4,28 +4,33 @@ import DrawingCanvas from "./drawing-canvas";
 export default class AppInitializer extends HTMLElement {
   constructor() {
       super();
-      this.shadow = this.attachShadow(
-          {mode: "open"}
-      );
     }
 
     connectedCallback() {
       this.render();
-      // this.shadowRoot.appendChild(new DrawingCanvas())
+      const container = document.querySelector('.container');
 
       const drawingCanvas = new DrawingCanvas();
-      this.shadowRoot.appendChild(drawingCanvas);
+      container.appendChild(drawingCanvas);
  
-      // Здесь мы используем setTimeout, чтобы дать DOM время на обновление
       setTimeout(() => {
-        // const canvas = drawingCanvas;
         const actionPanel = new ActionPanel(drawingCanvas)
-        this.shadowRoot.appendChild(actionPanel);
+        container.appendChild(actionPanel);
       }, 0);
     }
   
     render() {
-      return this.shadowRoot.innerHTML = ``;
+      return this.innerHTML = `
+      <style>
+        .container {
+          display: flex;
+          justify-content: center;
+          gap: 30px;
+          max-width: 900px;
+        }
+      </style>
+      <div class="container"></div>
+      `;
     }
 }
 
