@@ -151,36 +151,38 @@ export default class DrawingCanvas extends HTMLElement {
   }
 
   drawPolygon() {
-    let vektorCoordinatesArr = [];
-
-    const centerPoint = this.findCenterPoint(this.pointArr);
-    this.findAngles(centerPoint, this.pointArr);
-
-    for (let i = 0; i < this.pointArr.length; i++) {
-      if (i + 1 !== this.pointArr.length) {
-        vektorCoordinatesArr.push({
-          x1: this.pointArr[i].x,
-          y1: this.pointArr[i].y,
-          x2: this.pointArr[i + 1].x,
-          y2: this.pointArr[i + 1].y
-        })
-      } else {
-        vektorCoordinatesArr.push({
-          x1: this.pointArr[i].x,
-          y1: this.pointArr[i].y,
-          x2: this.pointArr[0].x,
-          y2: this.pointArr[0].y
-        })
+    if (!this.isPolygonDrawn) {
+      let vektorCoordinatesArr = [];
+  
+      const centerPoint = this.findCenterPoint(this.pointArr);
+      this.findAngles(centerPoint, this.pointArr);
+  
+      for (let i = 0; i < this.pointArr.length; i++) {
+        if (i + 1 !== this.pointArr.length) {
+          vektorCoordinatesArr.push({
+            x1: this.pointArr[i].x,
+            y1: this.pointArr[i].y,
+            x2: this.pointArr[i + 1].x,
+            y2: this.pointArr[i + 1].y
+          })
+        } else {
+          vektorCoordinatesArr.push({
+            x1: this.pointArr[i].x,
+            y1: this.pointArr[i].y,
+            x2: this.pointArr[0].x,
+            y2: this.pointArr[0].y
+          })
+        }
+        this.isPolygonDrawn = true;
+        this.isCanvasActive = false;
       }
-      this.isPolygonDrawn = true;
-      this.isCanvasActive = false;
+  
+      this.pointArr.forEach((_, index) => {
+        const vektor = new MyVektor(vektorCoordinatesArr[index].x1, vektorCoordinatesArr[index].y1, vektorCoordinatesArr[index].x2, vektorCoordinatesArr[index].y2, this.vektorArr.length + 1);
+        this.vektorArr.push(vektor);
+        this.canvas.appendChild(vektor);
+      })
     }
-
-    this.pointArr.forEach((_, index) => {
-      const vektor = new MyVektor(vektorCoordinatesArr[index].x1, vektorCoordinatesArr[index].y1, vektorCoordinatesArr[index].x2, vektorCoordinatesArr[index].y2, this.vektorArr.length + 1);
-      this.vektorArr.push(vektor);
-      this.canvas.appendChild(vektor);
-    })
   }
 
   render() {
