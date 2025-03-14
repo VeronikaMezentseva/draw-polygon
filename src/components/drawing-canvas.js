@@ -8,6 +8,7 @@ export default class DrawingCanvas extends HTMLElement {
     this.isPolygonDrawn = false;
     this.firstPointSelectionFlag = false;
     this.secondPointSelectionFlag = false;
+    this.isPathCreated = false;
     this.pointArr = [];
     this.vektorArr = [];
     this.events = new EventTarget();
@@ -31,7 +32,12 @@ export default class DrawingCanvas extends HTMLElement {
       event.stopPropagation();
       this.renderPoint(event);
     });
+
     this.events.addEventListener('pathesCreated', (evt) => {
+      console.log('pathesCreated');
+      // TODO: очищать статусы векторов перед рисованием
+      // TODO: перед каждым выбором точки проверять выбрано ли уже две точки, если да - очищать векторы
+      this.vektorArr.forEach((vektor) => vektor.active = false);
       const pointNames = this.pointArr.map((point) => point.num);
       const pathes = evt.detail;
 
@@ -44,7 +50,9 @@ export default class DrawingCanvas extends HTMLElement {
         vektor.active = true;
         vektor.render();
       })
+      this.isPathCreated = true;
     });
+
     this.events.addEventListener('changeOrder', () => {
       console.log('change clicked');
       this.vektorArr.forEach((vektor) => {
@@ -80,20 +88,21 @@ export default class DrawingCanvas extends HTMLElement {
     const isFirstPointSelected = this.pointArr.find((point) => point.selectedAsFirst === true);
     const isSecondPointSelected = this.pointArr.find((point) => point.selectedAsSecond === true);
     if (isFirstPointSelected && isSecondPointSelected) {
+      // //тогда здесь
+      // this.canvas.vektorArr.forEach((vektor) => vektor.active = false);
       this.events.dispatchEvent(new Event('twoPointsSelected'));
+
     }
     
   }
 
   renderPoint(event) {
-    if (this.isCanvasActive) {
+    if (this.isCanvasActive && !this.isPolygonDrawn) {
       const rect = this.canvas.getBoundingClientRect();
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
-      console.log(`Клик по координатам: (${x}, ${y})`);
       
       const point = new MyPoint(x, y, this.pointArr.length + 1, this);
-      // подписываемся на событие pointPressed
       point.onPointPressed(() => {
         this.handlePointPressed(point);
       });
@@ -115,12 +124,11 @@ export default class DrawingCanvas extends HTMLElement {
       this.canvas.removeChild(vektorNode);
     })
     this.vektorArr = [];
-
+    
     this.isCanvasActive = false;
-
-    this.events.dispatchEvent(new Event('pointsCleared')); // Генерируем событие
-
+    this.events.dispatchEvent(new Event('pointsCleared'));
     this.isPolygonDrawn = false;
+    this.isPathCreated = false;
   }
 
   findCenterPoint(points) {

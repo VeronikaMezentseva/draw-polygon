@@ -5,6 +5,7 @@ export default class ActionPanel extends HTMLElement {
       this.events = new EventTarget();
       this.clockwisePath = '';
       this.counterclockwisePath = '';
+      this.orderButtonText = 'Clockwise order';
     }
 
     attachEventListeners() {
@@ -20,13 +21,12 @@ export default class ActionPanel extends HTMLElement {
           this.render();
         } else if (event.target.classList.contains('draw-button')) {
           this.canvas.drawPolygon();
+          this.render();
         } else if (event.target.classList.contains('first-point-button')) {
           this.events.dispatchEvent(new Event('firstPointButtonPressed'));
         } else if (event.target.classList.contains('second-point-button')) {
           this.events.dispatchEvent(new Event('secondPointButtonPressed'));
         } else if (event.target.classList.contains('order-button')) {
-          // TODO
-          console.log('listener added');
           this.canvas.events.dispatchEvent(new Event('changeOrder'));
         }
       });
@@ -82,15 +82,19 @@ export default class ActionPanel extends HTMLElement {
       canvas.events.addEventListener('pointsCleared', () => this.render());
       this.events.addEventListener('firstPointButtonPressed', (evt) => {
         canvas.secondPointSelectionFlag = false;
-        canvas.firstPointSelectionFlag = !canvas.firstPointSelectionFlag;
+        canvas.firstPointSelectionFlag = true;
       });
       this.events.addEventListener('secondPointButtonPressed', (evt) => {
         canvas.firstPointSelectionFlag = false;
-        canvas.secondPointSelectionFlag = !canvas.secondPointSelectionFlag;
+        canvas.secondPointSelectionFlag = true;
       });
 
       canvas.events.addEventListener('pointSelected', () => this.render());
       canvas.events.addEventListener('twoPointsSelected', () => {
+        this.canvas.vektorArr.forEach((vektor) => {
+          vektor.active = false;
+          vektor.render();
+        });
         this.handlePath();
         this.render();
       });
@@ -98,8 +102,13 @@ export default class ActionPanel extends HTMLElement {
   
     render() {
       const pointsLength = this.canvas.pointArr.length;
+
       const isDisabledClearButton = pointsLength > 0 ? false : true;
-      const isDisabledDrawButton = pointsLength >= 3 && pointsLength <=15 ? false : true;
+      const isDisabledDrawButton = (pointsLength >= 3 && pointsLength <=15 ? false : true) || this.canvas.isPolygonDrawn;
+      const isDisabledPointSelectingButtons = !this.canvas.isPolygonDrawn;
+      const isCreatePointsButtonDisabled = this.canvas.isPolygonDrawn;
+      const isChangeOrderButtonDisabled = !this.canvas.isPathCreated;
+
       const firstSelectedPoint = this.canvas.pointArr.find((point) => point.selectedAsFirst);
       const secondSelectedPoint = this.canvas.pointArr.find((point) => point.selectedAsSecond);
       const pointMap = {};
@@ -129,21 +138,21 @@ export default class ActionPanel extends HTMLElement {
       <div class="action-panel">
         <div>
           <p>Create polygon</p>
-          <button class="button create-point-button">Create points</button>
+          <button class="button create-point-button" ${isCreatePointsButtonDisabled && 'disabled'}>Create points</button>
           <points-component numbers="${pointsLength}"></points-component>
           <button class="button draw-button" ${isDisabledDrawButton && 'disabled'}>Draw polygon</button>
         </div>
         <div>
           <p>Create path</p>
           <div class="path-button-container">
-            <button class="button first-point-button"}>First point:</button>
+            <button class="button first-point-button" ${isDisabledPointSelectingButtons && 'disabled'}>First point:</button>
             <p>${firstSelectedPoint ? `p${firstSelectedPoint.num}` : ''}</p>
           </div>
           <div class="path-button-container">
-            <button class="button second-point-button"}>Second point:</button>
+            <button class="button second-point-button" ${isDisabledPointSelectingButtons && 'disabled'}>Second point:</button>
             <p>${secondSelectedPoint ? `p${secondSelectedPoint.num}` : ''}</p>
           </div>
-          <button class="button order-button"}>Change order</button>
+          <button class="button order-button" ${isChangeOrderButtonDisabled && 'disabled'}>${this.orderButtonText}</button>
           <button class="button clear-button" ${isDisabledClearButton && 'disabled'}>Clear</button>
         </div>
         <p>Path clockwisePath: ${this.clockwisePath}</p>
