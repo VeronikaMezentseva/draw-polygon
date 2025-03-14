@@ -10,8 +10,17 @@ export default class DrawingCanvas extends HTMLElement {
     this.secondPointSelectionFlag = false;
     this.pointArr = [];
     this.vektorArr = [];
-
     this.events = new EventTarget();
+  }
+
+  handleActivateVektors(arr, start, end) {
+    const startIndex = arr.indexOf(start);
+    const endIndex = arr.indexOf(end);
+
+    for (let i = startIndex; i < this.pointArr.length; i++) {
+      arr[i].active = true;
+      arr[i].render();
+    }
   }
   
   connectedCallback() {
@@ -22,6 +31,20 @@ export default class DrawingCanvas extends HTMLElement {
       event.stopPropagation();
       this.renderPoint(event);
     });
+    this.events.addEventListener('pathesCreated', (evt) => {
+      const pointNames = this.pointArr.map((point) => point.num);
+      const pathes = evt.detail;
+
+      let indexesToFind = pathes.clockwisePath.filter((point) => pathes.clockwisePath.indexOf(point) !== pathes.clockwisePath.length - 1);
+
+      const indexes = indexesToFind.map(value => pointNames.indexOf(value));
+
+      const vektorsToActivate = indexes.map(index => this.vektorArr[index]);
+      vektorsToActivate.forEach((vektor) => {
+        vektor.active = true;
+        vektor.render();
+      })
+    })
   }
 
   handlePointPressed(point) {
@@ -142,7 +165,7 @@ export default class DrawingCanvas extends HTMLElement {
     }
 
     this.pointArr.forEach((_, index) => {
-      const vektor = new MyVektor(vektorCoordinatesArr[index].x1, vektorCoordinatesArr[index].y1, vektorCoordinatesArr[index].x2, vektorCoordinatesArr[index].y2);
+      const vektor = new MyVektor(vektorCoordinatesArr[index].x1, vektorCoordinatesArr[index].y1, vektorCoordinatesArr[index].x2, vektorCoordinatesArr[index].y2, this.vektorArr.length + 1);
       this.vektorArr.push(vektor);
       this.canvas.appendChild(vektor);
     })

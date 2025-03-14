@@ -39,29 +39,30 @@ export default class ActionPanel extends HTMLElement {
         const pathes = this.makePathes(pointNames, firstPoint, secondPoint);
         this.clockwisePath = pathes.clockwiseArr;
         this.counterclockwisePath = pathes.counterclockwiseArr;
+
+        this.canvas.events.dispatchEvent(new CustomEvent('pathesCreated', {
+          detail: {
+            clockwisePath: this.clockwisePath,
+            counterclockwisePath: this.counterclockwisePath
+          }
+        }));
       }
     }
 
     makePathes(arr, start, end) {
-      // arr = [5,2,7,6,8,1,3]
-      // arr = [3,1,8,6,7,2,5]
-      // start = 2
-      // end = 1
-      // [2,5,3,1]
-
       const startIndex = arr.indexOf(start);
       const endIndex = arr.indexOf(end);
       let clockwiseArr = [];
       let counterclockwiseArr = [];
       for (let i = startIndex; i % arr.length !== endIndex; i++) {
-        clockwiseArr.push(arr[i%arr.length]);
+        clockwiseArr.push(arr[i % arr.length]);
       }
       clockwiseArr.push(arr[endIndex]);
       const reverseArr = arr.reverse();
       const startIndexReverse = reverseArr.indexOf(start);
       const endIndexReverse = reverseArr.indexOf(end);
       for (let i = startIndexReverse; i % reverseArr.length !== endIndexReverse; i++) {
-        counterclockwiseArr.push(reverseArr[i%reverseArr.length]);
+        counterclockwiseArr.push(reverseArr[i % reverseArr.length]);
       }
       counterclockwiseArr.push(reverseArr[endIndexReverse]);
       return {
@@ -97,6 +98,10 @@ export default class ActionPanel extends HTMLElement {
       const isDisabledDrawButton = pointsLength >= 3 && pointsLength <=15 ? false : true;
       const firstSelectedPoint = this.canvas.pointArr.find((point) => point.selectedAsFirst);
       const secondSelectedPoint = this.canvas.pointArr.find((point) => point.selectedAsSecond);
+      const pointMap = {};
+      this.canvas.pointArr.forEach((point) => {
+        pointMap[point.num] = point;
+      });
       this.innerHTML = `
       <style>
         .action-panel {

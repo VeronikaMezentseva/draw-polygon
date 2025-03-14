@@ -1,5 +1,5 @@
 export default class MyVektor extends HTMLElement {
-  constructor(x1, y1, x2, y2) {
+  constructor(x1, y1, x2, y2, num) {
       super();
       this.shadow = this.attachShadow(
           {mode: "open"}
@@ -9,6 +9,7 @@ export default class MyVektor extends HTMLElement {
       this.x2 = x2;
       this.y2 = y2;
       this.active = false;
+      this.num = num;
     }
 
     connectedCallback() {
