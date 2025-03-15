@@ -165,6 +165,14 @@ export default class ActionPanel extends HTMLElement {
           border: none;
           border-radius: 8px;
         }
+        .button:hover:not(:disabled) {
+          background-color: #d3eaea;
+          outline: 1px solid white;
+        }
+        .button:disabled {
+          opacity: .7;
+          pointer: none;
+        }
         p {
           margin: 5px 0px;
         }
