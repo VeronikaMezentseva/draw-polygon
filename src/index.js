@@ -1,10 +1,10 @@
-import TestComponent from "../src/components/test-components";
 import DrawingCanvas from "./components/drawing-canvas";
 import Point from "./components/my-point";
 import ActionPanel from "./components/action-panel";
 import AppInitializer from "./components/app-initializer";
 import MyVektor from "./components/my-vektor";
 import PointsComponent from "./components/points-paragraph";
+import * as css from "../src/index.css";
 
 // SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
 //

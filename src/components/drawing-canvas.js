@@ -13,6 +13,7 @@ export default class DrawingCanvas extends HTMLElement {
     this.firstPointSelectionFlag = false;
     this.secondPointSelectionFlag = false;
     this.isPathCreated = false;
+    this.order = 'Clockwise order';
     this.pointArr = [];
     this.vektorArr = [];
     this.events = new EventTarget();
@@ -31,17 +32,36 @@ export default class DrawingCanvas extends HTMLElement {
       this.vektorArr.forEach((vektor) => vektor.active = false);
       const pointNames = this.pointArr.map((point) => point.num);
       const pathes = evt.detail;
+      this.order = evt.detail.order;
 
       let indexesToFind = pathes.clockwisePath.filter((point) => pathes.clockwisePath.indexOf(point) !== pathes.clockwisePath.length - 1);
 
       const indexes = indexesToFind.map(value => pointNames.indexOf(value));
 
       const vektorsToActivate = indexes.map(index => this.vektorArr[index]);
+
       vektorsToActivate.forEach((vektor) => {
         vektor.active = true;
         vektor.render();
       })
       this.isPathCreated = true;
+
+      if (this.order === 'Clockwise order') {
+        vektorsToActivate.forEach((vektor) => {
+          vektor.render();
+        })
+      } else {
+        const activeVektors = this.vektorArr.filter((vektor) => vektor.active);
+        const deactiveVektors = this.vektorArr.filter((vektor) => !vektor.active);
+        activeVektors.forEach((vektor) => {
+          vektor.active = false;
+          vektor.render()
+        });
+        deactiveVektors.forEach((vektor) => {
+          vektor.active = true;
+          vektor.render()
+        })
+      }
     });
 
     this.events.addEventListener('changeOrder', () => {

@@ -19,7 +19,6 @@ export default class MyPoint extends HTMLElement {
         });
       }
 
-      // Метод для добавления слушателя события
       onPointPressed(callback) {
         this.events.addEventListener('pointPressed', callback);
       }

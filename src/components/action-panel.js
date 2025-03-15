@@ -62,7 +62,8 @@ export default class ActionPanel extends HTMLElement {
         this.canvas.events.dispatchEvent(new CustomEvent('pathesCreated', {
           detail: {
             clockwisePath: this.clockwisePath,
-            counterclockwisePath: this.counterclockwisePath
+            counterclockwisePath: this.counterclockwisePath,
+            order: this.orderButtonText
           }
         }));
       }

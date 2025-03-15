@@ -4,8 +4,6 @@ export default class PointsComponent extends HTMLElement {
       this.attachShadow({ mode: 'open' });
 
       const numbers = this.getAttribute('numbers');
-
-      // Создаем стиль
       const style = document.createElement('style');
       style.textContent = `
         p {
@@ -13,10 +11,8 @@ export default class PointsComponent extends HTMLElement {
         }
       `;
 
-      // Создаем параграф
       this.paragraph = document.createElement('p');
 
-      // Добавляем стиль и параграф в теневой дом
       this.shadowRoot.append(style, this.paragraph);
   }
 
