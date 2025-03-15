@@ -34,3 +34,7 @@ export default class TestComponent extends HTMLElement {
 
 // Register the CurrentDate component using the tag name <current-date>.
 customElements.define("test-component", TestComponent);
+
+// SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later

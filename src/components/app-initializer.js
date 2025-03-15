@@ -35,3 +35,7 @@ export default class AppInitializer extends HTMLElement {
 }
 
 customElements.define('app-initializer', AppInitializer);
+
+// SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later

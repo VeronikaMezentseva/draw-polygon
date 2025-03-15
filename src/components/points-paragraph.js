@@ -43,3 +43,7 @@ export default class PointsComponent extends HTMLElement {
 }
 
 customElements.define('points-component', PointsComponent);
+
+// SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later

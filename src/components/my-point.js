@@ -69,3 +69,7 @@ export default class MyPoint extends HTMLElement {
 }
 
 customElements.define('my-point', MyPoint);
+
+// SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
