@@ -1,6 +1,10 @@
 import MyPoint from "./my-point";
 import MyVektor from "./my-vektor";
 
+// SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 export default class DrawingCanvas extends HTMLElement {
   constructor() {
     super();
