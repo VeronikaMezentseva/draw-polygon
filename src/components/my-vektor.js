@@ -1,23 +1,21 @@
 export default class MyVektor extends HTMLElement {
   constructor(x1, y1, x2, y2, num) {
-      super();
-      this.shadow = this.attachShadow(
-          {mode: "open"}
-      );
-      this.x1 = x1;
-      this.y1 = y1;
-      this.x2 = x2;
-      this.y2 = y2;
-      this.active = false;
-      this.num = num;
-    }
+    super();
+    this.shadow = this.attachShadow({ mode: "open" });
+    this.x1 = x1;
+    this.y1 = y1;
+    this.x2 = x2;
+    this.y2 = y2;
+    this.active = false;
+    this.num = num;
+  }
 
-    connectedCallback() {
-      this.render();
-    }
-  
-    render() {
-      return this.shadowRoot.innerHTML = `
+  connectedCallback() {
+    this.render();
+  }
+
+  render() {
+    return (this.shadowRoot.innerHTML = `
       <style>
       .vektor-container {
         position: absolute;
@@ -42,14 +40,16 @@ export default class MyVektor extends HTMLElement {
     </style>
       <div class="vektor-container">
         <svg class="vektor" height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
-          <line class="line ${this.active && 'line_active'}" x1="${this.x1}" y1="${this.y1}" x2="${this.x2}" y2="${this.y2}" />
+          <line class="line ${this.active && "line_active"}" x1="${
+            this.x1
+          }" y1="${this.y1}" x2="${this.x2}" y2="${this.y2}" />
         </svg> 
       </div>
-    `;
-    }
+    `);
+  }
 }
 
-customElements.define('my-vektor', MyVektor);
+customElements.get('my-vektor') || customElements.define('my-vektor', MyVektor);
 
 // SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
 //

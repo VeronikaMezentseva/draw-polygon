@@ -1,44 +1,44 @@
-export default class PointsComponent extends HTMLElement {
+export default class PointsParagraph extends HTMLElement {
   constructor() {
-      super();
-      this.attachShadow({ mode: 'open' });
+    super();
+    this.attachShadow({ mode: "open" });
 
-      const numbers = this.getAttribute('numbers');
-      const style = document.createElement('style');
-      style.textContent = `
+    const numbers = this.getAttribute("numbers");
+    const style = document.createElement("style");
+    style.textContent = `
         p {
-          color: ${numbers >= 3 && numbers <=15 ? '#1bcc35' : '#DC2E45'};
+          color: ${numbers >= 3 && numbers <= 15 ? "#1bcc35" : "#DC2E45"};
         }
       `;
 
-      this.paragraph = document.createElement('p');
+    this.paragraph = document.createElement("p");
 
-      this.shadowRoot.append(style, this.paragraph);
+    this.shadowRoot.append(style, this.paragraph);
   }
 
   connectedCallback() {
-      this.updateNumbers();
+    this.updateNumbers();
   }
 
   static get observedAttributes() {
-      return ['numbers'];
+    return ["numbers"];
   }
 
-  attributeChangedCallback(name, oldValue, newValue) {
-      if (name === 'numbers') {
-          this.updateNumbers();
-      }
+  attributeChangedCallback(name) {
+    if (name === "numbers") {
+      this.updateNumbers();
+    }
   }
 
   updateNumbers() {
-      const numbers = this.getAttribute('numbers');
-      if (numbers) {
-          this.paragraph.textContent = `Created ${numbers} points`;
-      }
+    const numbers = this.getAttribute("numbers");
+    if (numbers) {
+      this.paragraph.textContent = `Created ${numbers} points`;
+    }
   }
 }
 
-customElements.define('points-component', PointsComponent);
+customElements.get('points-paragraph') || customElements.define('points-paragraph', PointsParagraph);
 
 // SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
 //

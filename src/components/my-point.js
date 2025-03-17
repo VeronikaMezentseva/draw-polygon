@@ -1,34 +1,31 @@
-// Компонент Point
 export default class MyPoint extends HTMLElement {
-    constructor(x, y, num, canvas) {
-        super();
-        this.shadow = this.attachShadow(
-            {mode: "open"}
-        );
-        this.events = new EventTarget();
-        this.x = x;
-        this.y = y;
-        this.num = num;
-        this.canvas = canvas;
-        this.selectedAsFirst = false;
-        this.selectedAsSecond = false;
-        this.addEventListener('click', (evt) => {
-          evt.stopPropagation()
-          evt.preventDefault();
-          this.events.dispatchEvent(new Event('pointPressed'));
-        });
-      }
+  constructor(x, y, num, canvas) {
+    super();
+    this.shadow = this.attachShadow({ mode: "open" });
+    this.events = new EventTarget();
+    this.x = x;
+    this.y = y;
+    this.num = num;
+    this.canvas = canvas;
+    this.selectedAsFirst = false;
+    this.selectedAsSecond = false;
+  }
 
-      onPointPressed(callback) {
-        this.events.addEventListener('pointPressed', callback);
-      }
+  onPointPressed(callback) {
+    this.events.addEventListener("pointPressed", callback);
+  }
 
-      connectedCallback() {
-        this.render();
-      }
-    
-      render() {
-        return this.shadowRoot.innerHTML = `
+  connectedCallback() {
+    this.render();
+    this.addEventListener("click", (evt) => {
+      evt.stopPropagation();
+      evt.preventDefault();
+      this.events.dispatchEvent(new Event("pointPressed"));
+    });
+  }
+
+  render() {
+    return (this.shadowRoot.innerHTML = `
         <style>
           .point {
             position: absolute;
@@ -60,14 +57,16 @@ export default class MyPoint extends HTMLElement {
             background-color: #0197F6;
           }
         </style>
-        <div class="point ${(this.selectedAsFirst || this.selectedAsSecond) && 'point_selected'}">
+        <div class="point ${
+          (this.selectedAsFirst || this.selectedAsSecond) && "point_selected"
+        }">
             
         </div>
-      `;
-      }
+      `);
+  }
 }
 
-customElements.define('my-point', MyPoint);
+customElements.get('my-point') || customElements.define('my-point', MyPoint);
 
 // SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
 //
